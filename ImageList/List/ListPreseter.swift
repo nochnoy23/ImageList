@@ -34,7 +34,8 @@ class ListPresenter: Presenter {
   }
 
   func pushView(for id: Int) {
-    let controller = ImageViewer(with: self.getValue(for: id), id: id)
+    let data = self.model.getValue(for: id)
+    let controller = ImageViewer(with: ImageViewerData(id: id, image: data?.image, date: data?.date))
 
     DispatchQueue.main.async {
       if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
@@ -50,9 +51,7 @@ class ListPresenter: Presenter {
         imageViewer.id == id {
         
         let data = self?.model.getValue(for: id)
-        imageViewer.imageView?.image = data?.image
-        imageViewer.title = data?.date
-        imageViewer.view.setNeedsDisplay()
+        imageViewer.update(image: data?.image, date: data?.date)
       }
     }
   }
